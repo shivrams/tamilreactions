@@ -1,4 +1,6 @@
 #!/usr/bin/python
+# YO MAN GIT PANRA GETHU KAATRA
+
 import sys
 import getopt
 from PIL import Image,ImageDraw,ImageFont
