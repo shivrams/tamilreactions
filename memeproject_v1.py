@@ -1,6 +1,30 @@
 #!/usr/bin/python
 # YO MAN GIT PANRA GETHU KAATRA
 
+# TODO/YOMAN: Clean up the code below and integrate
+import cStringIO
+import requests # don't forget to pip install requests
+
+def load(self, image_data):
+    #Ensure it is a stream first
+    if not isinstance(image_data, cStringIO.InputType):
+        image_data = cStringIO.StringIO(image_data)
+
+    try:
+        self.image = Image.open(image_data)
+    except Exception:
+        logging.exception("Unable to load the image with PIL")
+
+def load_from_url(self, image_url):
+    try:
+        response = requests.get(image_url)
+    except Exception:
+        mesg = "open_from_url: Unable to open %s - could not load image"
+        logging.exception(mesg % image_url)
+    else:
+        image_data = cStringIO.StringIO(response.content)
+        self.load(image_data)
+
 import sys
 import getopt
 from PIL import Image,ImageDraw,ImageFont
@@ -10,12 +34,12 @@ class TextEmbed(object):
 		self.x,self.y=(10,10)
 #Open the image
 		self.img=Image.open(r"/Users/chaithu/python_programs/pictures/meme.jpg")
-#Passing the image size	
+#Passing the image size
 		self.width,self.height=(400,400)
 #Imaage size variable
 		size=(self.width,self.height)
-		self.outpath="/Users/chaithu/python_programs/pictures-meme.jpg"	
-#Image font size 
+		self.outpath="/Users/chaithu/python_programs/pictures-meme.jpg"
+#Image font size
 		self.fontsize=50
 		self.imgfont=ImageFont.truetype(r"/System/Library/Fonts/AppleGothic.ttf",self.fontsize)
 #Resizing the image according to the size
@@ -36,7 +60,7 @@ class TextEmbed(object):
 		fontsize=self.fontsize
                 while ((self.Twidth > self.Iwidth) | (self.Theight > self.Iheight)):
 #                       fontsize=fontsize-2
-			fontsize = fontsize - 5 
+			fontsize = fontsize - 5
 #selecting the font and size
                         self.imgfont=ImageFont.truetype(r"/System/Library/Fonts/AppleGothic.ttf",fontsize)
 # VERY IMPORTANT finding the size of the text on the Image
@@ -57,17 +81,17 @@ class TextEmbed(object):
 			elif opt ==  "--topnext":
 				self.txt=self.txt.upper()
 				self.textfontcal(self.txt)
-                                self.y =  8 + self.offset 
+                                self.y =  8 + self.offset
 				self.drawn()
 				print "self.offest = %s " % (self.y)
 		"""
 		elif opt == "--middle":
 #			y=0
 			Twidth,Theight=addtext.textsize(txt,imgfont)
-			y = (2.5*Theight) 
+			y = (2.5*Theight)
 		elif opt == "--middlenext":
 #			y=0
-			Twidth,Theight=addtext.textsize(txt,imgfont)	
+			Twidth,Theight=addtext.textsize(txt,imgfont)
 			y = (3.0*Theight)
 		elif opt == "--bottom":
 #			y=0
@@ -83,7 +107,7 @@ class TextEmbed(object):
 			print " Printing from else values Iheight , Theight "+str(Iheight)+" "+str(Theight)
 		"""
 		self.output()
-	def drawn(self):	
+	def drawn(self):
 		print "PRINTING Y AFTER GETOPTS FOR LLOP"+str(self.y)
 		print ("Theigth=%s Twidth=%s" %(self.Theight,self.Twidth))
 		print ("Iheigth=%s Iwidth=%s" %(self.Iheight,self.Iwidth))
@@ -124,7 +148,7 @@ this logic enables the text to the centered on the image
 			z += 0.35
 		self.addtext.text(((center-textOS),self.y),self.txt,font=self.imgfont,fill="black")
 	def output(self):
-		print "printingy == "+str(self.y) 
+		print "printingy == "+str(self.y)
 		self.imgrs.save(self.outpath)
 		self.imgrs.show()
 	"""
